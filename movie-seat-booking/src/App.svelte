@@ -1,10 +1,14 @@
 <script>
 	import { onMount } from "svelte";
-	
+
 	let moviePrice = 0;
 	let movieIndex = 0;
-	let count = 0; 
+	let count = 0;
 	let total = 0;
+
+	$:{
+		total = count * moviePrice;
+	}
 
 	function allSeats() {
 		return document.querySelectorAll('.row .seat:not(.occupied)');
@@ -19,10 +23,7 @@
 		);
 
 		localStorage.setItem("selectedSeats", JSON.stringify(seatsIndex));
-
-		const selectedSeatsCount = selectedSeats.length;
-		count = selectedSeatsCount;
-		total = selectedSeatsCount * moviePrice;		
+		count = selectedSeats.length;
 	}
 
 	// Get data from localstorage and populate UI
@@ -47,7 +48,6 @@
 			movieIndex = selectedMovieIndex;
 		}
 		moviePrice = document.getElementById("movie").value;
-		total = count * moviePrice;	
 
 		// Seat click event
 		const container = document.querySelector('.container');
@@ -57,7 +57,6 @@
 				!e.target.classList.contains("occupied")
 			) {
 				e.target.classList.toggle("selected");
-
 				updateSelected();
 			}
 		});
@@ -66,13 +65,12 @@
 	function handleMovieSelect(e) {
 		movieIndex = e.target.selectedIndex;
 		moviePrice = +e.target.value;
-		total = count * moviePrice;
 		localStorage.setItem("selectedMovieIndex", movieIndex);
 		localStorage.setItem("selectedMoviePrice", moviePrice);
 	}
 
-	onMount(() => {		
-		populateUI();		
+	onMount(() => {
+		populateUI();
 	});
 </script>
 
