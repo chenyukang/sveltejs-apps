@@ -29,24 +29,7 @@
 			showError("email", "Email is not valid");
 		}
 	}
-
-	// Check required fields
-	function checkRequired(inputArr) {
-		let isRequired = false;
-		inputArr.forEach(function (input) {
-			let name = input[0];
-			let value = input[1];
-			if (value.trim() === "") {
-				showError(name, `${name} is required`);
-				isRequired = true;
-			} else {
-				showSuccess(name);
-			}
-		});
-
-		return isRequired;
-	}
-
+	
 	// Check input length
 	function checkLength(name, input, min, max) {
 		if (input.length < min) {
@@ -74,13 +57,11 @@
 	// Event listeners	
 	function handleSubmit(e) {
 		e.preventDefault();
-		if (!checkRequired([["username", username], ["email", email], ["password", password], ["password2", password2]])) {
-			checkLength("username", username, 3, 15);
-			console.log("password: ", password);
-			checkLength("password", password, 6, 25);
-			checkEmail(email);
-			checkPasswordsMatch(password, password2);
-		}
+		checkLength("username", username, 3, 15);
+		console.log("password: ", password);
+		checkLength("password", password, 6, 25);
+		checkEmail(email);
+		checkPasswordsMatch(password, password2);
 	};
 </script>
 
@@ -90,12 +71,12 @@
 			<h2>Register</h2>
 			<div class="form-control">
 				<label for="username">Username</label>
-				<input type="text" bind:value={username} id="username" placeholder="Enter username" />
+				<input type="text" bind:value={username} id="username" placeholder="Enter username" required>
 				<small></small>
 			</div>
 			<div class="form-control">
 				<label for="email">Email</label>
-				<input type="text" bind:value={email} id="email" placeholder="Enter email" />
+				<input type="text" bind:value={email} id="email" placeholder="Enter email" required>
 				<small></small>
 			</div>
 			<div class="form-control">
@@ -105,6 +86,7 @@
 					id="password"
 					bind:value={password}
 					placeholder="Enter password"
+					required
 				/>
 				<small></small>
 			</div>
@@ -115,10 +97,11 @@
 					id="password2"
 					bind:value={password2}
 					placeholder="Enter password again"
+					required
 				/>
 				<small></small>
 			</div>
-			<button on:click={handleSubmit} type="submit">Submit</button>
+			<button on:submit={handleSubmit} type="submit">Submit</button>
 		</form>
 	</div>
 </main>
